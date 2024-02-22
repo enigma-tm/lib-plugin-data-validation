@@ -1,0 +1,25 @@
+{
+  "name": "paysera/lib-plugin-data-validation",
+  "description": "Library for iterable input validation",
+  "type": "library",
+  "require": {
+    "php": ">=7.4",
+    "madesimple/php-arrays": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Paysera\\DataValidator\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Paysera\\DataValidator\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "phpunit": "./vendor/phpunit/phpunit/phpunit tests"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6"
+  }
+}
