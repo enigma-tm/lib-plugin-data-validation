@@ -6,6 +6,7 @@ namespace Paysera\DataValidator\Validator;
 
 use MadeSimple\Arrays\Arr;
 use MadeSimple\Arrays\ArrDots;
+use Paysera\DataValidator\Validator\Exception\IncorrectValidationRuleStructure;
 use Paysera\DataValidator\Validator\Helper\Str;
 use Paysera\DataValidator\Validator\Rules\AbstractRule;
 
@@ -38,6 +39,9 @@ abstract class AbstractValidator
         return $this;
     }
 
+    /**
+     * @throws IncorrectValidationRuleStructure
+     */
     public function addRule(AbstractRule $rule): self
     {
         $this->rules[$rule->getName()] = $rule;

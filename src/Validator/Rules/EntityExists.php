@@ -6,6 +6,7 @@ namespace Paysera\DataValidator\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
 use Paysera\DataValidator\Validator\Contract\RepositoryInterface;
+use Paysera\DataValidator\Validator\Exception\IncorrectValidationRuleStructure;
 
 class EntityExists extends AbstractRule
 {
@@ -18,6 +19,9 @@ class EntityExists extends AbstractRule
         $this->repository = $repository;
     }
 
+    /**
+     * @throws IncorrectValidationRuleStructure
+     */
     public function validate(AbstractValidator $validator, $data, $pattern, $parameters): void
     {
         foreach ($validator->getValues($data, $pattern) as $attribute => $value) {

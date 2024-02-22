@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace Paysera\DataValidator\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
+use Paysera\DataValidator\Validator\Exception\IncorrectValidationRuleStructure;
 
 abstract class AbstractRule
 {
     protected string $name = '';
 
+    /**
+     * @throws IncorrectValidationRuleStructure
+     */
     public function getName(): string
     {
+        if (empty($this->name)) {
+            throw new IncorrectValidationRuleStructure('You must reset the $name property value');
+        }
         return $this->name;
     }
 
