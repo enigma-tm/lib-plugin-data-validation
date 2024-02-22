@@ -30,6 +30,10 @@ class AbstractValidatorTest extends TestCase
         yield 'entity exists' => [
             $entityId,
             $repositoryMock,
+            [
+                'field' => "3",
+                'custom_field' => 'some value',
+            ],
             true,
             [],
         ];
@@ -43,6 +47,9 @@ class AbstractValidatorTest extends TestCase
         yield 'entity does not exist' => [
             $entityId,
             $repositoryMock,
+            [
+                'field' => "3",
+            ],
             false,
             [
                 'field' => [
@@ -58,6 +65,7 @@ class AbstractValidatorTest extends TestCase
     public function testRealValidator(
         string $entityId,
         RepositoryInterface $repositoryMock,
+        array $values,
         bool $validationResult,
         array $errors
     ): void
@@ -70,15 +78,13 @@ class AbstractValidatorTest extends TestCase
                 $rule = new EntityExists($repository);
                 $this->addRule($rule);
                 $this->setRuleMessage($rule->getName(), 'error message for entity-exists rule');
+                $this->setAttributeMessage('custom_field', 'customized error message for specific field');
             }
         };
 
         $rules = [
             'field' => 'entity-exists',
-        ];
-
-        $values = [
-            'field' => "3",
+            'custom_field' => 'required'
         ];
 
         $this->assertEquals(

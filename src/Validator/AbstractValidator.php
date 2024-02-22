@@ -39,6 +39,13 @@ abstract class AbstractValidator
         return $this;
     }
 
+    public function setAttributeMessage(string $name, string $message): self
+    {
+        $this->messages['custom'][$name] = $message;
+
+        return $this;
+    }
+
     /**
      * @throws IncorrectValidationRuleStructure
      */

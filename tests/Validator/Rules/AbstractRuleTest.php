@@ -1,9 +1,10 @@
 <?php
 
-namespace Paysera\DataValidator\Validator\Rules;
+namespace Paysera\DataValidator\Tests\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
 use Paysera\DataValidator\Validator\Exception\IncorrectValidationRuleStructure;
+use Paysera\DataValidator\Validator\Rules\AbstractRule;
 use PHPUnit\Framework\TestCase;
 
 class AbstractRuleTest extends TestCase

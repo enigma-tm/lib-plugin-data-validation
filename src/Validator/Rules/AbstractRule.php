@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Paysera\DataValidator\Validator\Rules;
 
+use Countable;
 use Paysera\DataValidator\Validator\AbstractValidator;
 use Paysera\DataValidator\Validator\Exception\IncorrectValidationRuleStructure;
 
@@ -24,5 +25,12 @@ abstract class AbstractRule
 
     abstract public function validate(AbstractValidator $validator, $data, $pattern, $parameters): void;
 
-    // There will be other common methods here as validation rules are added to the project
+    protected function isFilled($value): bool
+    {
+        return !(
+            (is_null($value)) ||
+            ($value === '') ||
+            ((is_array($value) || is_a($value, Countable::class)) && empty($value))
+        );
+    }
 }

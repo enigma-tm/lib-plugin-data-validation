@@ -47,7 +47,7 @@ class EntityExistsTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'entity-exists', [':id' => null])
-            ->willReturnCallback(function($arg) {
+            ->willReturnCallback(function() {
                 $this->assertTrue(true);
             });
         $validatorMock->expects($this->once())
@@ -75,7 +75,7 @@ class EntityExistsTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'entity-exists', [':id' => ''])
-            ->willReturnCallback(function($arg) {
+            ->willReturnCallback(function() {
                 $this->assertTrue(true);
             });
         $validatorMock->expects($this->once())
@@ -103,7 +103,7 @@ class EntityExistsTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'entity-exists', [':id' => false])
-            ->willReturnCallback(function($arg) {
+            ->willReturnCallback(function() {
                 $this->assertTrue(true);
             });
         $validatorMock->expects($this->once())
@@ -132,7 +132,7 @@ class EntityExistsTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'entity-exists', [':id' => $orderStatusId])
-            ->willReturnCallback(function($arg) {
+            ->willReturnCallback(function() {
                 $this->assertTrue(true);
             });
         $validatorMock->expects($this->once())
