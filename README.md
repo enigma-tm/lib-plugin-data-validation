@@ -69,6 +69,9 @@ and then implement the `validate` method (because it is the abstract one).
 
 Investigate the `EntityExists` class and the `AbstractValidatorTest` test as an examples of rules and their usage.
 
+As mentioned above, you can take the code from the original library and use it here by adapting it.
+In particular, the validation rules code. Actually, it is strongly recommend to do in such way.
+
 # Testing
 ```
 bash run_tests.sh
