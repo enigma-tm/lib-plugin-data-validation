@@ -16,6 +16,11 @@
       "Paysera\\DataValidator\\Tests\\": "tests/"
     }
   },
+  "config": {
+    "preferred-install": "dist",
+    "prepend-autoloader": false,
+    "optimize-autoloader": true
+  },
   "scripts": {
     "phpunit": "./vendor/phpunit/phpunit/phpunit tests"
   },

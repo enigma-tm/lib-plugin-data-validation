@@ -1,6 +1,6 @@
 <?php
 
-namespace Paysera\Payment\Tests\Validator\Helper;
+namespace Paysera\DataValidator\Tests\Validator\Helper;
 
 use Paysera\DataValidator\Validator\Helper\Str;
 use PHPUnit\Framework\TestCase;

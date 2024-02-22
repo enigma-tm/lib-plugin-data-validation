@@ -1,9 +1,9 @@
 <?php
 
-namespace Paysera\Payment\Tests\Validator\Rules;
+namespace Paysera\DataValidator\Tests\Validator\Rules;
 
-use Paysera\DataValidator\Contract\RepositoryInterface;
 use Paysera\DataValidator\Validator\AbstractValidator;
+use Paysera\DataValidator\Validator\Contract\RepositoryInterface;
 use Paysera\DataValidator\Validator\Rules\EntityExists;
 use PHPUnit\Framework\TestCase;
 
@@ -13,9 +13,9 @@ class EntityExistsTest extends TestCase
     {
         $orderStatusId = 2;
         $data = [
-            'payment_paysera_new_order_status_id' => $orderStatusId,
+            'paysera_some_entity_id' => $orderStatusId,
         ];
-        $pattern = 'payment_paysera_new_order_status_id';
+        $pattern = 'paysera_some_entity_id';
         $validatorMock = $this->createMock(AbstractValidator::class);
         $validatorMock->expects($this->never())
             ->method('addError');
@@ -24,8 +24,8 @@ class EntityExistsTest extends TestCase
             ->with($data, $pattern)
             ->willReturn($data);
 
-        $orderStatusRepositoryMock = $this->createMock(RepositoryInterface::class);
-        $orderStatusRepositoryMock->expects($this->once())
+        $repositoryMock = $this->createMock(RepositoryInterface::class);
+        $repositoryMock->expects($this->once())
             ->method('find')
             ->with($orderStatusId)
             ->willReturn(['some not empty array that means that specified entity exists']);
@@ -37,11 +37,11 @@ class EntityExistsTest extends TestCase
             'parameters' => [
                 '',
             ],
-            $orderStatusRepositoryMock,
+            $repositoryMock,
         ];
 
         $data = [
-            'payment_paysera_new_order_status_id' => null,
+            'paysera_some_entity_id' => null,
         ];
         $validatorMock = $this->createMock(AbstractValidator::class);
         $validatorMock->expects($this->once())
@@ -54,8 +54,8 @@ class EntityExistsTest extends TestCase
             ->method('getValues')
             ->with($data, $pattern)
             ->willReturn($data);
-        $orderStatusRepositoryMock = $this->createMock(RepositoryInterface::class);
-        $orderStatusRepositoryMock->expects($this->never())
+        $repositoryMock = $this->createMock(RepositoryInterface::class);
+        $repositoryMock->expects($this->never())
             ->method('find');
 
         yield 'value is null' => [
@@ -65,11 +65,11 @@ class EntityExistsTest extends TestCase
             'parameters' => [
                 '',
             ],
-            $orderStatusRepositoryMock,
+            $repositoryMock,
         ];
 
         $data = [
-            'payment_paysera_new_order_status_id' => '',
+            'paysera_some_entity_id' => '',
         ];
         $validatorMock = $this->createMock(AbstractValidator::class);
         $validatorMock->expects($this->once())
@@ -82,8 +82,8 @@ class EntityExistsTest extends TestCase
             ->method('getValues')
             ->with($data, $pattern)
             ->willReturn($data);
-        $orderStatusRepositoryMock = $this->createMock(RepositoryInterface::class);
-        $orderStatusRepositoryMock->expects($this->never())
+        $repositoryMock = $this->createMock(RepositoryInterface::class);
+        $repositoryMock->expects($this->never())
             ->method('find');
 
         yield 'value is empty' => [
@@ -93,11 +93,11 @@ class EntityExistsTest extends TestCase
             'parameters' => [
                 '',
             ],
-            $orderStatusRepositoryMock,
+            $repositoryMock,
         ];
 
         $data = [
-            'payment_paysera_new_order_status_id' => false,
+            'paysera_some_entity_id' => false,
         ];
         $validatorMock = $this->createMock(AbstractValidator::class);
         $validatorMock->expects($this->once())
@@ -110,8 +110,8 @@ class EntityExistsTest extends TestCase
             ->method('getValues')
             ->with($data, $pattern)
             ->willReturn($data);
-        $orderStatusRepositoryMock = $this->createMock(RepositoryInterface::class);
-        $orderStatusRepositoryMock->expects($this->never())
+        $repositoryMock = $this->createMock(RepositoryInterface::class);
+        $repositoryMock->expects($this->never())
             ->method('find');
 
         yield 'value is false' => [
@@ -121,12 +121,12 @@ class EntityExistsTest extends TestCase
             'parameters' => [
                 '',
             ],
-            $orderStatusRepositoryMock,
+            $repositoryMock,
         ];
 
         $orderStatusId = 555;
         $data = [
-            'payment_paysera_new_order_status_id' => $orderStatusId,
+            'paysera_some_entity_id' => $orderStatusId,
         ];
         $validatorMock = $this->createMock(AbstractValidator::class);
         $validatorMock->expects($this->once())
@@ -139,8 +139,8 @@ class EntityExistsTest extends TestCase
             ->method('getValues')
             ->with($data, $pattern)
             ->willReturn($data);
-        $orderStatusRepositoryMock = $this->createMock(RepositoryInterface::class);
-        $orderStatusRepositoryMock->expects($this->once())
+        $repositoryMock = $this->createMock(RepositoryInterface::class);
+        $repositoryMock->expects($this->once())
             ->method('find')
             ->with($orderStatusId)
             ->willReturn([]);
@@ -152,16 +152,16 @@ class EntityExistsTest extends TestCase
             'parameters' => [
                 '',
             ],
-            $orderStatusRepositoryMock,
+            $repositoryMock,
         ];
     }
 
     /**
      * @dataProvider getTestedData
      */
-    public function testValidate($validatorMock, $data, $pattern, $parameters, $orderRepositoryMock)
+    public function testValidate($validatorMock, $data, $pattern, $parameters, $repositoryMock)
     {
-        $entityExistsRule = new EntityExists($orderRepositoryMock);
+        $entityExistsRule = new EntityExists($repositoryMock);
 
         $entityExistsRule->validate($validatorMock, $data, $pattern, $parameters);
     }

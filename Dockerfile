@@ -29,3 +29,5 @@ RUN echo "\n[xdebug]" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini  \
 
 USER 1000
 WORKDIR /var/www
+
+RUN rm -rf composer.lock

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Paysera\DataValidator\Contract;
+namespace Paysera\DataValidator\Validator\Contract;
 
 interface RepositoryInterface
 {
