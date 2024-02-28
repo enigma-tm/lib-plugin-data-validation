@@ -56,6 +56,22 @@ abstract class AbstractValidator
         return $this;
     }
 
+    public function getValue($array, $pattern)
+    {
+        $imploded = ArrDots::implode($array);
+        $pattern  = sprintf('/^%s$/', str_replace(static::WILD, '[0-9]+', $pattern));
+
+        foreach ($imploded as $attribute => $value) {
+            if (preg_match($pattern, $attribute) == 0) {
+                continue;
+            }
+
+            return $value;
+        }
+
+        return null;
+    }
+
     public function getValues($array, $pattern): iterable
     {
         foreach (ArrDots::collate($array, $pattern, static::WILD) as $attribute => $value) {

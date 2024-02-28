@@ -97,4 +97,46 @@ class AbstractValidatorTest extends TestCase
             $realValidator->getProcessedErrors()
         );
     }
+
+    public function testGetValue()
+    {
+        $validator = new class extends AbstractValidator { };
+
+        $values = [
+            'a' => [
+                'b' => [
+                    'c' => 'value',
+                ],
+            ],
+        ];
+
+        $this->assertEquals(
+            'value',
+            $validator->getValue($values, 'a.b.c')
+        );
+
+        $this->assertNull(
+            $validator->getValue($values, 'a.b.d')
+        );
+    }
+
+    public function testGetValues()
+    {
+        $validator = new class extends AbstractValidator { };
+
+        $values = [
+            'a' => [
+                'b' => [
+                    'c' => 'value',
+                ],
+            ],
+        ];
+
+        $this->assertEquals(
+            [
+                'a.b.c' => 'value',
+            ],
+            iterator_to_array($validator->getValues($values, 'a.b.*'))
+        );
+    }
 }
