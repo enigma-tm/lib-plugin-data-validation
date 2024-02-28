@@ -18,6 +18,17 @@ class RequiredTest extends TestCase
         );
     }
 
+    protected function createAbstractValidatorMock(array $data, string $pattern)
+    {
+        $validatorMock = $this->createMock(AbstractValidator::class);
+        $validatorMock->expects($this->once())
+            ->method('getValues')
+            ->with($data, $pattern)
+            ->willReturn($data);
+
+        return $validatorMock;
+    }
+
     public function getDataset(): iterable
     {
         $value = 'some value';
@@ -26,13 +37,9 @@ class RequiredTest extends TestCase
         $data = [
             $pattern => $value,
         ];
-        $validatorMock = $this->createMock(AbstractValidator::class);
+        $validatorMock = $this->createAbstractValidatorMock($data, $pattern);
         $validatorMock->expects($this->never())
             ->method('addError');
-        $validatorMock->expects($this->once())
-            ->method('getValues')
-            ->with($data, $pattern)
-            ->willReturn($data);
 
         yield 'value is correct simple value' => [
             $validatorMock,
@@ -49,13 +56,9 @@ class RequiredTest extends TestCase
         $data = [
             $pattern => $value,
         ];
-        $validatorMock = $this->createMock(AbstractValidator::class);
+        $validatorMock = $this->createAbstractValidatorMock($data, $pattern);
         $validatorMock->expects($this->never())
             ->method('addError');
-        $validatorMock->expects($this->once())
-            ->method('getValues')
-            ->with($data, $pattern)
-            ->willReturn($data);
 
         yield 'value is correct array value' => [
             $validatorMock,
@@ -70,7 +73,7 @@ class RequiredTest extends TestCase
         $data = [
             $pattern => $value,
         ];
-        $validatorMock = $this->createMock(AbstractValidator::class);
+        $validatorMock = $this->createAbstractValidatorMock($data, $pattern);
         $validatorMock
             ->method('addError')
             ->with($pattern, 'required')
@@ -78,10 +81,6 @@ class RequiredTest extends TestCase
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('required', $ruleName);
             });
-        $validatorMock
-            ->method('getValues')
-            ->with($data, $pattern)
-            ->willReturn($data);
 
         yield 'value is empty' => [
             $validatorMock,
@@ -96,6 +95,14 @@ class RequiredTest extends TestCase
         $data = [
             $pattern => $value,
         ];
+        $validatorMock = $this->createAbstractValidatorMock($data, $pattern);
+        $validatorMock
+            ->method('addError')
+            ->with($pattern, 'required')
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('required', $ruleName);
+            });
 
         yield 'value is null' => [
             $validatorMock,
@@ -110,6 +117,14 @@ class RequiredTest extends TestCase
         $data = [
             $pattern => $value,
         ];
+        $validatorMock = $this->createAbstractValidatorMock($data, $pattern);
+        $validatorMock
+            ->method('addError')
+            ->with($pattern, 'required')
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('required', $ruleName);
+            });
 
         yield 'value is false' => [
             $validatorMock,

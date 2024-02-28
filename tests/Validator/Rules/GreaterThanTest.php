@@ -47,7 +47,7 @@ class GreaterThanTest extends TestCase
         return $validatorMock;
     }
 
-    public function getTestedData()
+    public function getTestedData(): iterable
     {
         $pattern = 'maximum_weight';
         $value = 5;
@@ -94,8 +94,9 @@ class GreaterThanTest extends TestCase
                 ':fieldToCompare' => $fieldToComparePattern,
                 ':valueToCompare' => $fieldToCompareValue
             ])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('greater-than', $ruleName);
             });
 
         yield 'value is not greater than value of the field to compare' => [
@@ -127,8 +128,9 @@ class GreaterThanTest extends TestCase
                 ':fieldToCompare' => $fieldToComparePattern,
                 ':valueToCompare' => $fieldToCompareValue
             ])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('greater-than', $ruleName);
             });
 
         yield 'value is not sent' => [
@@ -157,8 +159,9 @@ class GreaterThanTest extends TestCase
                 ':fieldToCompare' => $fieldToComparePattern,
                 ':valueToCompare' => $fieldToCompareValue
             ])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('greater-than', $ruleName);
             });
 
         yield 'value to compare is not sent' => [
@@ -238,8 +241,9 @@ class GreaterThanTest extends TestCase
                 ':fieldToCompare' => $fieldToComparePattern,
                 ':valueToCompare' => $fieldToCompareValue
             ])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('greater-than', $ruleName);
             });
 
         yield 'value is not numeric' => [
@@ -270,8 +274,9 @@ class GreaterThanTest extends TestCase
                 ':fieldToCompare' => $fieldToComparePattern,
                 ':valueToCompare' => $fieldToCompareValue
             ])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('greater-than', $ruleName);
             });
 
         yield 'value to compare is not numeric' => [

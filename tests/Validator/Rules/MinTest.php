@@ -24,10 +24,11 @@ class MinTest extends TestCase
             ->method('getValues')
             ->with($data, $pattern)
             ->willReturn($data);
+
         return $validatorMock;
     }
 
-    public function getTestedData()
+    public function getTestedData(): iterable
     {
         $pattern = 'minimal_weight';
         $data = [
