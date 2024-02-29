@@ -1,6 +1,7 @@
 {
   "name": "paysera/lib-plugin-data-validation",
   "description": "Library for iterable input validation",
+  "license": "GPL-3.0",
   "type": "library",
   "require": {
     "php": ">=7.4",
