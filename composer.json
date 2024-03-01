@@ -3,6 +3,7 @@
   "description": "Library for iterable input validation",
   "license": "GPL-3.0",
   "type": "library",
+  "version": "0.2.0",
   "require": {
     "php": ">=7.4",
     "madesimple/php-arrays": "^2.0"

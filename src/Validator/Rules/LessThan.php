@@ -7,9 +7,9 @@ namespace Paysera\DataValidator\Validator\Rules;
 use Paysera\DataValidator\Validator\AbstractValidator;
 use Paysera\DataValidator\Validator\Exception\IncorrectValidationRuleStructure;
 
-class GreaterThan extends AbstractRule
+class LessThan extends AbstractRule
 {
-    protected string $name = 'greater-than';
+    protected string $name = 'less-than';
 
     /**
      * @throws IncorrectValidationRuleStructure
@@ -29,7 +29,7 @@ class GreaterThan extends AbstractRule
         }
 
         foreach ($values as $attribute => $value) {
-            if (is_numeric($value) && is_numeric($lowerBound) && $value > $lowerBound) {
+            if (is_numeric($value) && is_numeric($lowerBound) && $value < $lowerBound) {
                 continue;
             }
 
