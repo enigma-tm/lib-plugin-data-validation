@@ -29,10 +29,6 @@ class GreaterThan extends AbstractRule
         }
 
         foreach ($values as $attribute => $value) {
-            if ($value === '0') {
-                continue;
-            }
-
             if (is_numeric($value) && is_numeric($lowerBound) && $value > $lowerBound) {
                 continue;
             }
