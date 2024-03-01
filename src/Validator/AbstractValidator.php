@@ -100,7 +100,11 @@ abstract class AbstractValidator
                 $parameters = array_map('trim', explode(',', $parameters));
 
                 if (Arr::exists($this->rules, $rule)) {
-                    $this->rules[$rule]->validate($this, $values, $pattern, $parameters);
+                    if (!$this->rules[$rule]->validate($this, $values, $pattern, $parameters)) {
+                        // If the rule failed, we stop checking the rest of the rules for this pattern
+                        // @todo: do we need to stop on error for each field separately?
+                        break;
+                    }
                 }
             }
         }

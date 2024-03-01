@@ -15,7 +15,7 @@ class Min extends AbstractRule
     /**
      * @throws IncorrectValidationRuleStructure
      */
-    public function validate(AbstractValidator $validator, $data, $pattern, $parameters): void
+    public function validate(AbstractValidator $validator, $data, $pattern, $parameters): bool
     {
         $min = $parameters[0];
         $values = $validator->getValues($data, $pattern);
@@ -24,9 +24,10 @@ class Min extends AbstractRule
                 ':min' => $min,
                 ':value' => null,
             ]);
-            return;
+            return false;
         }
 
+        $isValid = true;
         foreach ($values as $attribute => $value) {
             if ($value === '0') {
                 continue;
@@ -37,9 +38,12 @@ class Min extends AbstractRule
             }
 
             $validator->addError($attribute, $this->getName(), [
-                ':min' => $min,
-                ':value' => $value,
+                ':min' => (string) $min,
+                ':value' => (string) $value,
             ]);
+            $isValid = false;
         }
+
+        return $isValid;
     }
 }

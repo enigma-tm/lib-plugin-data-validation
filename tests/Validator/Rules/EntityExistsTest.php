@@ -45,6 +45,7 @@ class EntityExistsTest extends TestCase
                 '',
             ],
             $repositoryMock,
+            true,
         ];
 
         $data = [
@@ -71,6 +72,7 @@ class EntityExistsTest extends TestCase
                 '',
             ],
             $repositoryMock,
+            false,
         ];
 
         $data = [
@@ -97,6 +99,7 @@ class EntityExistsTest extends TestCase
                 '',
             ],
             $repositoryMock,
+            false,
         ];
 
         $data = [
@@ -123,6 +126,7 @@ class EntityExistsTest extends TestCase
                 '',
             ],
             $repositoryMock,
+            false,
         ];
 
         $orderStatusId = 555;
@@ -152,16 +156,27 @@ class EntityExistsTest extends TestCase
                 '',
             ],
             $repositoryMock,
+            false,
         ];
     }
 
     /**
      * @dataProvider getTestedData
      */
-    public function testValidate($validatorMock, $data, $pattern, $parameters, $repositoryMock)
+    public function testValidate(
+        AbstractValidator $validatorMock,
+        array $data,
+        string $pattern,
+        array $parameters,
+        RepositoryInterface $repositoryMock,
+        bool $validationResult
+    )
     {
         $entityExistsRule = new EntityExists($repositoryMock);
 
-        $entityExistsRule->validate($validatorMock, $data, $pattern, $parameters);
+        $this->assertEquals(
+            $validationResult,
+            $entityExistsRule->validate($validatorMock, $data, $pattern, $parameters)
+        );
     }
 }

@@ -23,7 +23,7 @@ abstract class AbstractRule
         return $this->name;
     }
 
-    abstract public function validate(AbstractValidator $validator, $data, $pattern, $parameters): void;
+    abstract public function validate(AbstractValidator $validator, $data, $pattern, $parameters): bool;
 
     protected function isFilled($value): bool
     {

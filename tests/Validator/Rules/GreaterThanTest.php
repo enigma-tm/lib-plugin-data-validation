@@ -3,6 +3,7 @@
 namespace Paysera\DataValidator\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
+use Paysera\DataValidator\Validator\Rules\Comparison\GreaterThan;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -67,13 +68,14 @@ class GreaterThanTest extends TestCase
         $validatorMock->expects($this->never())
             ->method('addError');
 
-        yield 'value is correct' => [
+        yield 'value is correct; value to compare is correct' => [
             $validatorMock,
             $data,
             $pattern,
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            true,
         ];
 
         $value = 3;
@@ -106,6 +108,7 @@ class GreaterThanTest extends TestCase
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
         ];
 
         $data = [
@@ -140,11 +143,38 @@ class GreaterThanTest extends TestCase
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
         ];
 
         $fieldToCompareValue = null;
         $data = [
             $pattern => $value,
+        ];
+        $validatorMock = $this->createAbstractValidatorMock(
+            $data,
+            $pattern,
+            $value,
+            $fieldToComparePattern,
+            $fieldToCompareValue
+        );
+        $validatorMock->expects($this->never())
+            ->method('addError');
+
+        yield 'value is numeric; value to compare is not sent; nothing to compare' => [
+            $validatorMock,
+            $data,
+            $pattern,
+            'parameters' => [
+                $fieldToComparePattern,
+            ],
+            false,
+        ];
+
+        $value = 0;
+        $fieldToCompareValue = '0';
+        $data = [
+            $pattern => $value,
+            $fieldToComparePattern => $fieldToCompareValue,
         ];
         $validatorMock = $this->createAbstractValidatorMock(
             $data,
@@ -164,37 +194,14 @@ class GreaterThanTest extends TestCase
                 $this->assertEquals('greater-than', $ruleName);
             });
 
-        yield 'value to compare is not sent' => [
+        yield 'value is numeric; value to compare is a numeric string; value is not greater than valueToCompare' => [
             $validatorMock,
             $data,
             $pattern,
             'parameters' => [
                 $fieldToComparePattern,
             ],
-        ];
-
-        $fieldToCompareValue = '0';
-        $data = [
-            $pattern => $value,
-            $fieldToComparePattern => $fieldToCompareValue,
-        ];
-        $validatorMock = $this->createAbstractValidatorMock(
-            $data,
-            $pattern,
-            $value,
-            $fieldToComparePattern,
-            $fieldToCompareValue
-        );
-        $validatorMock->expects($this->never())
-            ->method('addError');
-
-        yield 'value to compare is 0' => [
-            $validatorMock,
-            $data,
-            $pattern,
-            'parameters' => [
-                $fieldToComparePattern,
-            ],
+            false,
         ];
 
         $value = '0';
@@ -213,13 +220,14 @@ class GreaterThanTest extends TestCase
         $validatorMock->expects($this->never())
             ->method('addError');
 
-        yield 'value is 0 and value to compare is -1' => [
+        yield 'value is "0" and value to compare is "-1"; the value is not less than valueToCompare' => [
             $validatorMock,
             $data,
             $pattern,
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            true,
         ];
 
         $value = 'dagsh';
@@ -253,6 +261,7 @@ class GreaterThanTest extends TestCase
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
         ];
 
         $value = 5;
@@ -268,33 +277,61 @@ class GreaterThanTest extends TestCase
             $fieldToComparePattern,
             $fieldToCompareValue
         );
-        $validatorMock->expects($this->once())
-            ->method('addError')
-            ->with($pattern, 'greater-than', [
-                ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
-            ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
-                $this->assertEquals($pattern, $field);
-                $this->assertEquals('greater-than', $ruleName);
-            });
+        $validatorMock->expects($this->never())
+            ->method('addError');
 
-        yield 'value to compare is not numeric' => [
+        yield 'value is numeric; value to compare is not numeric; nothing to compare' => [
             $validatorMock,
             $data,
             $pattern,
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
+        ];
+
+        $fieldToCompareValue = '';
+        $data = [
+            $pattern => $value,
+            $fieldToComparePattern => $fieldToCompareValue,
+        ];
+        $validatorMock = $this->createAbstractValidatorMock(
+            $data,
+            $pattern,
+            $value,
+            $fieldToComparePattern,
+            $fieldToCompareValue
+        );
+        $validatorMock->expects($this->never())
+            ->method('addError');
+
+        yield 'value is numeric; value to compare is empty string; nothing to compare' => [
+            $validatorMock,
+            $data,
+            $pattern,
+            'parameters' => [
+                $fieldToComparePattern,
+            ],
+            false,
         ];
     }
 
     /**
      * @dataProvider getTestedData
      */
-    public function testValidate($validator, $data, $pattern, $parameters)
+    public function testValidate(
+        AbstractValidator $validator,
+        array $data,
+        string $pattern,
+        array $parameters,
+        bool $validationResult
+    )
     {
         $greaterThanRule = new GreaterThan();
-        $greaterThanRule->validate($validator, $data, $pattern, $parameters);
+
+        $this->assertEquals(
+            $validationResult,
+            $greaterThanRule->validate($validator, $data, $pattern, $parameters)
+        );
     }
 }

@@ -45,6 +45,7 @@ class MinTest extends TestCase
             'parameters' => [
                 5,
             ],
+            true,
         ];
 
         $data = [
@@ -54,8 +55,9 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => 4])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('min', $ruleName);
             });
 
         yield 'value is less than has to be' => [
@@ -65,6 +67,7 @@ class MinTest extends TestCase
             'parameters' => [
                 5,
             ],
+            false,
         ];
 
         $data = [];
@@ -72,8 +75,9 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => null])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('min', $ruleName);
             });
 
         yield 'value is not sent' => [
@@ -83,6 +87,7 @@ class MinTest extends TestCase
             'parameters' => [
                 5,
             ],
+            false,
         ];
 
         $data = [
@@ -92,8 +97,9 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => null])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('min', $ruleName);
             });
 
         yield 'value is null' => [
@@ -103,6 +109,7 @@ class MinTest extends TestCase
             'parameters' => [
                 5,
             ],
+            false,
         ];
 
         $data = [
@@ -119,6 +126,7 @@ class MinTest extends TestCase
             'parameters' => [
                 5,
             ],
+            true,
         ];
 
         $data = [
@@ -128,8 +136,9 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => ''])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('min', $ruleName);
             });
 
         yield 'value is empty' => [
@@ -139,6 +148,7 @@ class MinTest extends TestCase
             'parameters' => [
                 5,
             ],
+            false,
         ];
 
         $data = [
@@ -148,8 +158,9 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => 'fewt'])
-            ->willReturnCallback(function() {
-                $this->assertTrue(true);
+            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+                $this->assertEquals($pattern, $field);
+                $this->assertEquals('min', $ruleName);
             });
 
         yield 'value is not numeric' => [
@@ -159,6 +170,7 @@ class MinTest extends TestCase
             'parameters' => [
                 5,
             ],
+            false,
         ];
     }
 

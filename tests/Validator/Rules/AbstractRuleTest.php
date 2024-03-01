@@ -9,12 +9,12 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractRuleTest extends TestCase
 {
-
     public function testRuleStructure()
     {
         $someRule = new class extends AbstractRule {
-            public function validate(AbstractValidator $validator, $data, $pattern, $parameters): void
+            public function validate(AbstractValidator $validator, $data, $pattern, $parameters): bool
             {
+                return true;
             }
         };
 

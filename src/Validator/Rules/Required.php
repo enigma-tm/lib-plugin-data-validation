@@ -10,9 +10,9 @@ class Required extends AbstractRule
 {
     protected string $name = 'required';
 
-    public function validate(AbstractValidator $validator, $data, $pattern, $parameters): void
+    public function validate(AbstractValidator $validator, $data, $pattern, $parameters): bool
     {
-        // Check value is not null
+        $isValid = true;
         foreach ($validator->getValues($data, $pattern) as $attribute => $value) {
             // not allowed: null, '', [], empty instance Countable
             if ($this->isFilled($value)) {
@@ -20,6 +20,9 @@ class Required extends AbstractRule
             }
 
             $validator->addError($attribute, $this->getName());
+            $isValid = false;
         }
+
+        return $isValid;
     }
 }

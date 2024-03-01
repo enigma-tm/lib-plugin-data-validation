@@ -48,6 +48,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            true,
         ];
 
         $value = [
@@ -67,6 +68,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            true,
         ];
 
         $value = '';
@@ -89,6 +91,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            false,
         ];
 
         $value = null;
@@ -111,6 +114,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            false,
         ];
 
         $value = false;
@@ -133,6 +137,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            false,
         ];
     }
 
