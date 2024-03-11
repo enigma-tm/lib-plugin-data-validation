@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Paysera\DataValidator\Tests\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
@@ -11,7 +13,7 @@ class AbstractRuleTest extends TestCase
 {
     public function testRuleStructure()
     {
-        $someRule = new class extends AbstractRule {
+        $someRule = new class () extends AbstractRule {
             public function validate(AbstractValidator $validator, $data, $pattern, $parameters): bool
             {
                 return true;

@@ -20,9 +20,11 @@ class EntityExists extends AbstractRule
     }
 
     /**
+     * @param array<string, mixed> $data
+     * @param array<int, string> $parameters
      * @throws IncorrectValidationRuleStructure
      */
-    public function validate(AbstractValidator $validator, $data, $pattern, $parameters): bool
+    public function validate(AbstractValidator $validator, array $data, string $pattern, array $parameters): bool
     {
         $isValid = true;
         foreach ($validator->getValues($data, $pattern) as $attribute => $value) {

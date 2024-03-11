@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Paysera\DataValidator\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
@@ -55,7 +57,7 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => 4])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('min', $ruleName);
             });
@@ -75,7 +77,7 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => null])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('min', $ruleName);
             });
@@ -97,7 +99,7 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => null])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('min', $ruleName);
             });
@@ -136,7 +138,7 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => ''])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('min', $ruleName);
             });
@@ -158,7 +160,7 @@ class MinTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'min', [':min' => 5, ':value' => 'fewt'])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('min', $ruleName);
             });

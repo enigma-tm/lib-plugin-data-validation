@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Paysera\DataValidator\Tests\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
@@ -55,7 +57,7 @@ class EntityExistsTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'entity-exists', [':id' => null])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('entity-exists', $ruleName);
             });
@@ -82,7 +84,7 @@ class EntityExistsTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'entity-exists', [':id' => ''])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('entity-exists', $ruleName);
             });
@@ -109,7 +111,7 @@ class EntityExistsTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'entity-exists', [':id' => false])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('entity-exists', $ruleName);
             });
@@ -137,7 +139,7 @@ class EntityExistsTest extends TestCase
         $validatorMock->expects($this->once())
             ->method('addError')
             ->with($pattern, 'entity-exists', [':id' => $orderStatusId])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('entity-exists', $ruleName);
             });
@@ -170,8 +172,7 @@ class EntityExistsTest extends TestCase
         array $parameters,
         RepositoryInterface $repositoryMock,
         bool $validationResult
-    )
-    {
+    ) {
         $entityExistsRule = new EntityExists($repositoryMock);
 
         $this->assertEquals(

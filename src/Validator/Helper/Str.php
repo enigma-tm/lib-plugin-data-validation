@@ -6,7 +6,10 @@ namespace Paysera\DataValidator\Validator\Helper;
 
 class Str
 {
-    public static function prettifyAttributeName(string $attribute): string
+    /**
+     * @param string|bool $attribute
+     */
+    public static function prettifyAttributeName($attribute): string
     {
         return ucfirst(str_replace(['.*', '.', '_'], ['', ' ', ' '], $attribute));
     }

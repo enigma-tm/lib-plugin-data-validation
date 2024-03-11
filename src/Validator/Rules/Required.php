@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace Paysera\DataValidator\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
+use Paysera\DataValidator\Validator\Exception\IncorrectValidationRuleStructure;
 
 class Required extends AbstractRule
 {
     protected string $name = 'required';
 
-    public function validate(AbstractValidator $validator, $data, $pattern, $parameters): bool
+    /**
+     * @param array<string, mixed> $data
+     * @param array<int, string> $parameters
+     * @throws IncorrectValidationRuleStructure
+     */
+    public function validate(AbstractValidator $validator, array $data, string $pattern, array $parameters): bool
     {
         $isValid = true;
         foreach ($validator->getValues($data, $pattern) as $attribute => $value) {

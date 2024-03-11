@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 namespace Paysera\DataValidator\Validator\Rules\Comparison;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
@@ -12,10 +11,13 @@ use Paysera\DataValidator\Validator\Rules\AbstractRule;
 abstract class AbstractComparison extends AbstractRule
 {
     protected string $name = '';
+
     /**
+     * @param array<string, mixed> $data
+     * @param array<int, string> $parameters
      * @throws IncorrectValidationRuleStructure
      */
-    public function validate(AbstractValidator $validator, $data, $pattern, $parameters): bool
+    public function validate(AbstractValidator $validator, array $data, string $pattern, array $parameters): bool
     {
         $fieldToCompare = $parameters[0];
         $lowerBound = $validator->getValue($data, $fieldToCompare);

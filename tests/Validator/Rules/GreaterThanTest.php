@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Paysera\DataValidator\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
@@ -32,8 +34,8 @@ class GreaterThanTest extends TestCase
         string $pattern,
         $value,
         string $fieldToComparePattern,
-        $fieldToCompareValue)
-    {
+        $fieldToCompareValue
+    ) {
         $validatorMock = $this->createMock(AbstractValidator::class);
         $validatorMock->expects($this->once())
             ->method('getValue')
@@ -94,9 +96,9 @@ class GreaterThanTest extends TestCase
             ->method('addError')
             ->with($pattern, 'greater-than', [
                 ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
+                ':valueToCompare' => $fieldToCompareValue,
             ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('greater-than', $ruleName);
             });
@@ -129,9 +131,9 @@ class GreaterThanTest extends TestCase
             ->method('addError')
             ->with($pattern, 'greater-than', [
                 ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
+                ':valueToCompare' => $fieldToCompareValue,
             ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('greater-than', $ruleName);
             });
@@ -187,9 +189,9 @@ class GreaterThanTest extends TestCase
             ->method('addError')
             ->with($pattern, 'greater-than', [
                 ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
+                ':valueToCompare' => $fieldToCompareValue,
             ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('greater-than', $ruleName);
             });
@@ -247,9 +249,9 @@ class GreaterThanTest extends TestCase
             ->method('addError')
             ->with($pattern, 'greater-than', [
                 ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
+                ':valueToCompare' => $fieldToCompareValue,
             ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('greater-than', $ruleName);
             });
@@ -325,8 +327,7 @@ class GreaterThanTest extends TestCase
         string $pattern,
         array $parameters,
         bool $validationResult
-    )
-    {
+    ) {
         $greaterThanRule = new GreaterThan();
 
         $this->assertEquals(

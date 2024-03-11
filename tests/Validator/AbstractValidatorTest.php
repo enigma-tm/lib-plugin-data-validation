@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Paysera\DataValidator\Tests\Validator;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
@@ -15,7 +17,7 @@ class AbstractValidatorTest extends TestCase
 {
     public function testNoValidationRules()
     {
-        $validator = new class extends AbstractValidator { };
+        $validator = new class () extends AbstractValidator { };
 
         $this->assertTrue($validator->validate([], []));
     }
@@ -63,7 +65,7 @@ class AbstractValidatorTest extends TestCase
             [
                 'field' => [
                     'entity-exists' => 'error message for entity-exists rule',
-                ]
+                ],
             ],
         ];
 
@@ -114,7 +116,7 @@ class AbstractValidatorTest extends TestCase
                 []
             );
 
-        $realValidator = new class($repositoryMock) extends AbstractValidator {
+        $realValidator = new class ($repositoryMock) extends AbstractValidator {
             public function __construct(RepositoryInterface $repository)
             {
                 parent::__construct();
@@ -303,7 +305,7 @@ class AbstractValidatorTest extends TestCase
      */
     public function testComplexValidationRulesStopOnError(array $values, array $rules, array $errors, string $wrongRule)
     {
-        $realValidator = new class() extends AbstractValidator {
+        $realValidator = new class () extends AbstractValidator {
             public function __construct()
             {
                 parent::__construct();
@@ -334,7 +336,7 @@ class AbstractValidatorTest extends TestCase
 
     public function testGetValue()
     {
-        $validator = new class extends AbstractValidator { };
+        $validator = new class () extends AbstractValidator { };
 
         $values = [
             'a' => [
@@ -356,7 +358,7 @@ class AbstractValidatorTest extends TestCase
 
     public function testGetValues()
     {
-        $validator = new class extends AbstractValidator { };
+        $validator = new class () extends AbstractValidator { };
 
         $values = [
             'a' => [

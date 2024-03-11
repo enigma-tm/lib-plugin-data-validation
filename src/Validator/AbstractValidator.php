@@ -12,15 +12,21 @@ use Paysera\DataValidator\Validator\Rules\AbstractRule;
 
 abstract class AbstractValidator
 {
-    const WILD = '*';
+    public const WILD = '*';
 
     /**
      * @var AbstractRule[]
      */
     protected array $rules;
 
+    /**
+     * @var array<string, array<string, string>>
+     */
     protected array $messages;
 
+    /**
+     * @var array<array<string, bool|string|array<string, bool|string>>>
+     */
     protected array $errors;
 
     protected string $prefix = '';
@@ -28,7 +34,10 @@ abstract class AbstractValidator
     public function __construct()
     {
         $this->rules = [];
-        $this->messages = ['rules' => [], 'custom' => []];
+        $this->messages = [
+            'rules' => [],
+            'custom' => [],
+        ];
         $this->errors = [];
     }
 
@@ -56,10 +65,14 @@ abstract class AbstractValidator
         return $this;
     }
 
-    public function getValue($array, $pattern)
+    /**
+     * @param array<string, array<string, mixed>> $array
+     * @return mixed|null
+     */
+    public function getValue(array $array, string $pattern)
     {
         $imploded = ArrDots::implode($array);
-        $pattern  = sprintf('/^%s$/', str_replace(static::WILD, '[0-9]+', $pattern));
+        $pattern = sprintf('/^%s$/', str_replace(static::WILD, '[0-9]+', $pattern));
 
         foreach ($imploded as $attribute => $value) {
             if (preg_match($pattern, $attribute) == 0) {
@@ -72,14 +85,22 @@ abstract class AbstractValidator
         return null;
     }
 
-    public function getValues($array, $pattern): iterable
+    /**
+     * @param array<string, array<string, mixed>> $array
+     * @return iterable<string, mixed>
+     */
+    public function getValues(array $array, string $pattern): iterable
     {
         foreach (ArrDots::collate($array, $pattern, static::WILD) as $attribute => $value) {
             yield $attribute => $value;
         }
     }
 
-    public function validate($values, array $ruleSet, string $prefix = null) : bool
+    /**
+     * @param array<string, array<string, mixed>> $values
+     * @param array<string, string> $ruleSet
+     */
+    public function validate(array $values, array $ruleSet, string $prefix = null): bool
     {
         // If there are no rules, there is nothing to validate
         if (empty($ruleSet)) {
@@ -92,11 +113,10 @@ abstract class AbstractValidator
 
         // For each pattern and its rules
         foreach ($ruleSet as $pattern => $rules) {
-            if (is_string($rules)) {
-                $rules = explode('|', $rules);
-            }
+            $rules = explode('|', $rules);
+
             foreach ($rules as $rule) {
-                list($rule, $parameters) = array_pad(explode(':', $rule, 2), 2, '');
+                [$rule, $parameters] = array_pad(explode(':', $rule, 2), 2, '');
                 $parameters = array_map('trim', explode(',', $parameters));
 
                 if (Arr::exists($this->rules, $rule)) {
@@ -118,12 +138,15 @@ abstract class AbstractValidator
         return count($this->errors) > 0;
     }
 
-    public function addError($attribute, $rule, $replacements = []): void
+    /**
+     * @param array<string, string> $replacements
+     */
+    public function addError(string $attribute, string $rule, array $replacements = []): void
     {
         $replacements = array_merge([
             ':attribute'    => $this->prefix . $attribute,
             '!(\S+)\|(\S+)' => true,
-        ], $replacements ?? []);
+        ], $replacements);
 
         $this->errors[] = [
             'attribute'    => $this->prefix . $attribute,
@@ -132,6 +155,9 @@ abstract class AbstractValidator
         ];
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     public function getProcessedErrors(): array
     {
         $errors = [];
