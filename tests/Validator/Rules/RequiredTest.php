@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Paysera\DataValidator\Tests\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
@@ -48,6 +50,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            true,
         ];
 
         $value = [
@@ -67,6 +70,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            true,
         ];
 
         $value = '';
@@ -77,7 +81,7 @@ class RequiredTest extends TestCase
         $validatorMock
             ->method('addError')
             ->with($pattern, 'required')
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('required', $ruleName);
             });
@@ -89,6 +93,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            false,
         ];
 
         $value = null;
@@ -99,7 +104,7 @@ class RequiredTest extends TestCase
         $validatorMock
             ->method('addError')
             ->with($pattern, 'required')
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('required', $ruleName);
             });
@@ -111,6 +116,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            false,
         ];
 
         $value = false;
@@ -121,7 +127,7 @@ class RequiredTest extends TestCase
         $validatorMock
             ->method('addError')
             ->with($pattern, 'required')
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('required', $ruleName);
             });
@@ -133,6 +139,7 @@ class RequiredTest extends TestCase
             'parameters' => [
                 '',
             ],
+            false,
         ];
     }
 

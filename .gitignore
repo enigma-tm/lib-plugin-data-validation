@@ -1,5 +1,6 @@
-composer.lock
 vendor/
 coverage/
 .phpunit.result.cache
 .composer/
+build/
+.idea/

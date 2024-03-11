@@ -20,10 +20,13 @@ class EntityExists extends AbstractRule
     }
 
     /**
+     * @param array<string, mixed> $data
+     * @param array<int, string> $parameters
      * @throws IncorrectValidationRuleStructure
      */
-    public function validate(AbstractValidator $validator, $data, $pattern, $parameters): void
+    public function validate(AbstractValidator $validator, array $data, string $pattern, array $parameters): bool
     {
+        $isValid = true;
         foreach ($validator->getValues($data, $pattern) as $attribute => $value) {
             if (!empty($value)) {
                 if ($this->repository->find((int) $value)) {
@@ -31,7 +34,10 @@ class EntityExists extends AbstractRule
                 }
             }
 
-            $validator->addError($attribute, $this->getName(), [':id' => $value]);
+            $validator->addError($attribute, $this->getName(), [':id' => (string) $value]);
+            $isValid = false;
         }
+
+        return $isValid;
     }
 }

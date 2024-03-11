@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Paysera\DataValidator\Validator\Rules;
 
 use Paysera\DataValidator\Validator\AbstractValidator;
+use Paysera\DataValidator\Validator\Rules\Comparison\LessThan;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -31,8 +34,8 @@ class LessThanTest extends TestCase
         string $pattern,
         $value,
         string $fieldToComparePattern,
-        $fieldToCompareValue)
-    {
+        $fieldToCompareValue
+    ) {
         $validatorMock = $this->createMock(AbstractValidator::class);
         $validatorMock->expects($this->once())
             ->method('getValue')
@@ -67,13 +70,14 @@ class LessThanTest extends TestCase
         $validatorMock->expects($this->never())
             ->method('addError');
 
-        yield 'value is correct' => [
+        yield 'value is correct; value to compare is correct' => [
             $validatorMock,
             $data,
             $pattern,
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            true,
         ];
 
         $value = 5;
@@ -92,9 +96,9 @@ class LessThanTest extends TestCase
             ->method('addError')
             ->with($pattern, 'less-than', [
                 ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
+                ':valueToCompare' => $fieldToCompareValue,
             ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('less-than', $ruleName);
             });
@@ -106,6 +110,7 @@ class LessThanTest extends TestCase
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
         ];
 
         $data = [
@@ -126,9 +131,9 @@ class LessThanTest extends TestCase
             ->method('addError')
             ->with($pattern, 'less-than', [
                 ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
+                ':valueToCompare' => $fieldToCompareValue,
             ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('less-than', $ruleName);
             });
@@ -140,6 +145,7 @@ class LessThanTest extends TestCase
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
         ];
 
         $fieldToCompareValue = null;
@@ -153,24 +159,17 @@ class LessThanTest extends TestCase
             $fieldToComparePattern,
             $fieldToCompareValue
         );
-        $validatorMock->expects($this->once())
-            ->method('addError')
-            ->with($pattern, 'less-than', [
-                ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
-            ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
-                $this->assertEquals($pattern, $field);
-                $this->assertEquals('less-than', $ruleName);
-            });
+        $validatorMock->expects($this->never())
+            ->method('addError');
 
-        yield 'value to compare is not sent' => [
+        yield 'value is numeric; value to compare is not sent; nothing to compare' => [
             $validatorMock,
             $data,
             $pattern,
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
         ];
 
         $fieldToCompareValue = '0';
@@ -189,20 +188,21 @@ class LessThanTest extends TestCase
             ->method('addError')
             ->with($pattern, 'less-than', [
                 ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
+                ':valueToCompare' => $fieldToCompareValue,
             ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('less-than', $ruleName);
             });
 
-        yield 'value to compare is 0' => [
+        yield 'value is numeric; value to compare is a numeric string; value is not less than valueToCompare' => [
             $validatorMock,
             $data,
             $pattern,
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
         ];
 
         $value = '0';
@@ -222,20 +222,21 @@ class LessThanTest extends TestCase
             ->method('addError')
             ->with($pattern, 'less-than', [
                 ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
+                ':valueToCompare' => $fieldToCompareValue,
             ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('less-than', $ruleName);
             });
 
-        yield 'value is 0 and value to compare is -1' => [
+        yield 'value is "0" and value to compare is "-1"; the value is not less than valueToCompare' => [
             $validatorMock,
             $data,
             $pattern,
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
         ];
 
         $value = 'dagsh';
@@ -255,9 +256,9 @@ class LessThanTest extends TestCase
             ->method('addError')
             ->with($pattern, 'less-than', [
                 ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
+                ':valueToCompare' => $fieldToCompareValue,
             ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
+            ->willReturnCallback(function ($field, $ruleName) use ($pattern) {
                 $this->assertEquals($pattern, $field);
                 $this->assertEquals('less-than', $ruleName);
             });
@@ -269,6 +270,7 @@ class LessThanTest extends TestCase
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
         ];
 
         $value = 5;
@@ -284,33 +286,60 @@ class LessThanTest extends TestCase
             $fieldToComparePattern,
             $fieldToCompareValue
         );
-        $validatorMock->expects($this->once())
-            ->method('addError')
-            ->with($pattern, 'less-than', [
-                ':fieldToCompare' => $fieldToComparePattern,
-                ':valueToCompare' => $fieldToCompareValue
-            ])
-            ->willReturnCallback(function($field, $ruleName) use ($pattern) {
-                $this->assertEquals($pattern, $field);
-                $this->assertEquals('less-than', $ruleName);
-            });
+        $validatorMock->expects($this->never())
+            ->method('addError');
 
-        yield 'value to compare is not numeric' => [
+        yield 'value is numeric; value to compare is not numeric; nothing to compare' => [
             $validatorMock,
             $data,
             $pattern,
             'parameters' => [
                 $fieldToComparePattern,
             ],
+            false,
+        ];
+
+        $fieldToCompareValue = '';
+        $data = [
+            $pattern => $value,
+            $fieldToComparePattern => $fieldToCompareValue,
+        ];
+        $validatorMock = $this->createAbstractValidatorMock(
+            $data,
+            $pattern,
+            $value,
+            $fieldToComparePattern,
+            $fieldToCompareValue
+        );
+        $validatorMock->expects($this->never())
+            ->method('addError');
+
+        yield 'value is numeric; value to compare is empty string; nothing to compare' => [
+            $validatorMock,
+            $data,
+            $pattern,
+            'parameters' => [
+                $fieldToComparePattern,
+            ],
+            false,
         ];
     }
 
     /**
      * @dataProvider getTestedData
      */
-    public function testValidate($validator, $data, $pattern, $parameters)
-    {
+    public function testValidate(
+        AbstractValidator $validator,
+        array $data,
+        string $pattern,
+        array $parameters,
+        bool $validationResult
+    ) {
         $greaterThanRule = new LessThan();
-        $greaterThanRule->validate($validator, $data, $pattern, $parameters);
+
+        $this->assertEquals(
+            $validationResult,
+            $greaterThanRule->validate($validator, $data, $pattern, $parameters)
+        );
     }
 }
